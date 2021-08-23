@@ -26,8 +26,7 @@ public class Orders extends BaseEntity{
 
     public Orders() {
     	
-    }
-    
+    }    
     public Orders(Users user, LocalDateTime orderDate, String orderTotal) {
         this.user = user;
         this.orderDate = orderDate;

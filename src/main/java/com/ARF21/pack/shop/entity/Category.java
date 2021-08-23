@@ -2,14 +2,14 @@ package com.ARF21.pack.shop.entity;
 
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @NoArgsConstructor
@@ -30,23 +30,17 @@ public class Category extends BaseEntity{
     public Category() {
     	
     }
-
-    public Category(@NotBlank @Size(max = 20) String categoryName, @NotBlank @Size(max = 150) String categoryDesc,
-			Set<Product> categoryProducts) {
-		super();
-		this.categoryName = categoryName;
-		this.categoryDesc = categoryDesc;
-		this.categoryProducts = categoryProducts;
-	}
     
-    
-
-	
-    
-    /*public Category(String categoryName, String categoryDesc) {
+    public Category(String categoryName, String categoryDesc, Set<Product> categoryProducts) {
         this.categoryName = categoryName;
         this.categoryDesc = categoryDesc;
-    }*/
+        this.categoryProducts = categoryProducts;
+    }
+
+    public Category(String categoryName, String categoryDesc) {
+        this.categoryName = categoryName;
+        this.categoryDesc = categoryDesc;
+    }
 
     public String getCategoryName() {
         return categoryName;

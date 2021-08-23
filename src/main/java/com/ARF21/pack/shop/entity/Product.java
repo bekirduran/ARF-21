@@ -10,6 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -25,13 +26,12 @@ public class Product extends BaseEntity {
     @NotBlank
     private String productName;
 
-    
+    @NotBlank
     private String productDesc;
 
-    
+    @NotBlank
     private Double productPrice;
 
-    private String productImageURL;
 
     private Long productStock;
 
@@ -40,35 +40,50 @@ public class Product extends BaseEntity {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "supplier_id")
     private Supplier supplier;
 
-    
-    @OneToMany(mappedBy = "size", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<ProductSize> sizes = new HashSet<>();
-    
-    
 
+    @JsonBackReference
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<ProductImage> images = new HashSet<>();
 
-    public Product() {
+    @JsonManagedReference
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<AttributeValue> attributeValues = new HashSet<>();
+
+    public Product(){
     	
     }
 
-    public Product(String productName, String productDesc, Double productPrice, String productImageURL, Long productStock, Category category, Supplier supplier, Set<ProductSize> sizes) {
+    public Product(String productName, String productDesc, Double productPrice, Long productStock, Category category, Supplier supplier) {
         this.productName = productName;
         this.productDesc = productDesc;
         this.productPrice = productPrice;
-        this.productImageURL = productImageURL;
         this.productStock = productStock;
         this.category = category;
         this.supplier = supplier;
-        this.sizes = sizes;
+
     }
 
-    
-    
+    public Set<ProductImage> getImages() {
+        return images;
+    }
+
+    public void setImages(Set<ProductImage> images) {
+        this.images = images;
+    }
+
+    public Set<AttributeValue> getAttributeValues() {
+        return attributeValues;
+    }
+
+    public void setAttributeValues(Set<AttributeValue> attributeValues) {
+        this.attributeValues = attributeValues;
+    }
+
     public String getProductName() {
         return productName;
     }
@@ -93,13 +108,6 @@ public class Product extends BaseEntity {
         this.productPrice = productPrice;
     }
 
-    public String getProductImageURL() {
-        return productImageURL;
-    }
-
-    public void setProductImageURL(String productImageURL) {
-        this.productImageURL = productImageURL;
-    }
 
     public Long getProductStock() {
         return productStock;
@@ -125,11 +133,5 @@ public class Product extends BaseEntity {
         this.supplier = supplier;
     }
 
-    /*public Set<ProductSize> getSizes() {
-        return sizes;
-    }*/
 
-    /*public void setSizes(Set<ProductSize> sizes) {
-        this.sizes = sizes;
-    }*/
 }
