@@ -50,10 +50,10 @@ public class ShopController {
     ProductImagerepository productImagerepository;
 
     @Autowired
-    ProductAttributeRepository attribute; 
+    ProductAttributeRepository productAttributeRepository;
     
     @Autowired
-    AttributevalueRepository attributevalueRepository;
+    AttributevalueRepository attributeValueRepository;
     
     @GetMapping("/all")
     public List<ProductDto> allAccess() {
@@ -64,28 +64,28 @@ public class ShopController {
     }
     
     @GetMapping("/item/{id}")
-    public ProductDto findProductById(@PathVariable Long id){
+    public ProductDto getProductById(@PathVariable Long id){
         return productService.getProductById(id);
     }
     
-    @GetMapping("/cata/{id}")
-    public Category findCatatById(@PathVariable Long id){
+    @GetMapping("/category/{id}")
+    public Category getCategorytById(@PathVariable Long id){
         return productService.getCateById(id);
     }
     
-    @GetMapping("/allcata")
-    public List<Category> allcataAccess() {
+    @GetMapping("/allcategories")
+    public List<Category> getAllCategories() {
 
         return categoryRepository.findAll();
     }
     
-    @PostMapping("/savecata")
-    public void postcata(@Valid @RequestBody Category request) {
+    @PostMapping("/savecategory")
+    public void postcategory(@Valid @RequestBody Category request) {
     	Postmanservice.postcata(request);
     }
     
-    @PostMapping("/savesup")
-    public void postsup(@Valid @RequestBody Supplier request) {
+    @PostMapping("/savesupplier")
+    public void postsupplier(@Valid @RequestBody Supplier request) {
     	Postmanservice.postsup(request);
     }
     
@@ -99,26 +99,26 @@ public class ShopController {
     	
     }
     
-    @PostMapping("/saveattirubete")
+    @PostMapping("/saveattribute")
     public void postatti(@Valid @RequestBody ProductAttribute request) {
     	ProductAttribute pat=new ProductAttribute(request.getAttributeName());
-    	attribute.save(pat);
+    	productAttributeRepository.save(pat);
     	
     	
     }
     
-    @PostMapping("/saveattu")
-    public void potpatti(@RequestBody AttiRequest request) {
-    	System.out.print(request.getValue()+"    "+request.getId()+"    "+request.getIid());
-    	ProductAttribute pa = attribute.findById(Long.valueOf(request.getIid()))
-                .orElseThrow(() -> new EntityNotFoundException("not found"));
-    	Product pd = productRepository.findById(request.getId())
-                .orElseThrow(() -> new EntityNotFoundException("not found"));
-    	
-    	
-    	
-    	AttributeValue Av =new AttributeValue(request.getValue(), pd, pa);
-    	attributevalueRepository.save(Av);
+    @PostMapping("/saveproductattribute")
+    public void postproductAttribute(@RequestBody AttiRequest request) {
+    	System.out.println(request.getValue()+"**"+request.getProductId()+"**"+request.getAttributeId());
+
+        Product pd = productRepository.findById(request.getProductId())
+                .orElseThrow(() -> new EntityNotFoundException("product not found"));
+
+    	ProductAttribute pa = productAttributeRepository.findById(request.getAttributeId())
+                .orElseThrow(() -> new EntityNotFoundException("product attribute not found"));
+
+    	AttributeValue av =new AttributeValue(request.getValue(), pd, pa);
+    	attributeValueRepository.save(av);
     	
     	
     }
