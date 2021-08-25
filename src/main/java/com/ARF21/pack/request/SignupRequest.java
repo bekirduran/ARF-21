@@ -32,6 +32,9 @@ public class SignupRequest {
     @NotBlank
     @Size(min = 6, max = 40)
     private String password;
+    
+    private String image;
+    private String adres;
   
     public String getUsername() {
         return username;
@@ -87,6 +90,22 @@ public class SignupRequest {
 
 	public void setTc(String tc) {
 		this.tc = tc;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
+	public String getAdres() {
+		return adres;
+	}
+
+	public void setAdres(String adres) {
+		this.adres = adres;
 	}
     
     

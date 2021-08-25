@@ -1,5 +1,7 @@
 package com.ARF21.pack.shop.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -10,6 +12,8 @@ public class ProductImage extends BaseEntity{
 
 
     private String imageURL;
+
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id")
     private Product product;

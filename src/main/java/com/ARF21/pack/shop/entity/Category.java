@@ -1,6 +1,6 @@
 package com.ARF21.pack.shop.entity;
 
-import lombok.NoArgsConstructor;
+
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -12,7 +12,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@NoArgsConstructor
+
 public class Category extends BaseEntity{
 
     @NotBlank
@@ -24,18 +24,13 @@ public class Category extends BaseEntity{
     private String categoryDesc;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Product> categoryProducts = new HashSet<>();
 
     public Category() {
     	
     }
-    
-    public Category(String categoryName, String categoryDesc, Set<Product> categoryProducts) {
-        this.categoryName = categoryName;
-        this.categoryDesc = categoryDesc;
-        this.categoryProducts = categoryProducts;
-    }
+
 
     public Category(String categoryName, String categoryDesc) {
         this.categoryName = categoryName;

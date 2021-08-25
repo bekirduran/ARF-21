@@ -1,14 +1,12 @@
 package com.ARF21.pack.shop.entity;
 
-import lombok.NoArgsConstructor;
+
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 @Entity
-
-@NoArgsConstructor
 public class OrderItems extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade= CascadeType.ALL)

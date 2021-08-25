@@ -9,13 +9,13 @@ import com.ARF21.pack.shop.entity.ProductAttribute;
 import com.ARF21.pack.shop.entity.ProductDto;
 import com.ARF21.pack.shop.entity.ProductImage;
 import com.ARF21.pack.shop.entity.Supplier;
-import com.ARF21.pack.shop.repository.AttributevalueRepository;
+import com.ARF21.pack.shop.repository.AttributeValueRepository;
 import com.ARF21.pack.shop.repository.CategoryRepository;
 import com.ARF21.pack.shop.repository.ProductAttributeRepository;
 import com.ARF21.pack.shop.repository.ProductImagerepository;
 import com.ARF21.pack.shop.repository.ProductRepository;
 import com.ARF21.pack.shop.service.ProductService;
-import com.ARF21.pack.shop.service.postmanservice;
+import com.ARF21.pack.shop.service.PostmanService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,7 +44,7 @@ public class ShopController {
     CategoryRepository categoryRepository;
     
     @Autowired
-    postmanservice Postmanservice;
+    PostmanService Postmanservice;
     
     @Autowired
     ProductImagerepository productImagerepository;
@@ -53,7 +53,7 @@ public class ShopController {
     ProductAttributeRepository productAttributeRepository;
     
     @Autowired
-    AttributevalueRepository attributeValueRepository;
+    AttributeValueRepository attributeValueRepository;
     
     @GetMapping("/all")
     public List<ProductDto> allAccess() {
@@ -121,6 +121,11 @@ public class ShopController {
     	attributeValueRepository.save(av);
     	
     	
+    }
+    
+    @PostMapping("/saveproduct")
+    public void postproduct(@RequestBody ProductDto request) {
+    	productService.create(request);
     }
 
 }

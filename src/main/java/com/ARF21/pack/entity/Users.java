@@ -55,6 +55,9 @@ public class Users {
 	@Size(max=120)
 	private String password;
 	
+	private String image;
+	private String adres;
+	
 	
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name="user_roles",
@@ -72,13 +75,15 @@ public class Users {
 		
 	}
 	
-	public Users(String username, String email,String name, String lastname, String tc, String password) {
+	public Users(String username, String email,String name, String lastname, String tc, String password,String image,String adres) {
 		this.username = username;
 		this.email = email;
 		this.name=name;
 		this.lastname=lastname;
 		this.tc=tc;
 		this.password = password;
+		this.adres=adres;
+		this.image=image;
 	}
 
 
@@ -153,6 +158,22 @@ public class Users {
 
 	public void setTc(String tc) {
 		this.tc = tc;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
+	public String getAdres() {
+		return adres;
+	}
+
+	public void setAdres(String adres) {
+		this.adres = adres;
 	}
 	
 	

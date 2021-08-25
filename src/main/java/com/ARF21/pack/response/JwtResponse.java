@@ -14,9 +14,12 @@ public class JwtResponse {
 	private String name;
 	private String lastname;
 	private String tc;
+	private String image;
+    private String adres;
 	private List<String> roles;
 
-	public JwtResponse(String accessToken, Long id, String username, String email,String name,String lastname,String tc, List<String> roles) {
+	public JwtResponse(String accessToken, Long id, String username, String email,String name,String lastname,String tc,String image,
+    String adres, List<String> roles) {
 		this.token = accessToken;
 		this.id = id;
 		this.username = username;
@@ -25,6 +28,8 @@ public class JwtResponse {
 		this.name=name;
 		this.lastname=lastname;
 		this.tc=tc;
+		this.image=image;
+		this.adres=adres;
 	}
 
 	public String getAccessToken() {
@@ -93,6 +98,22 @@ public class JwtResponse {
 
 	public void setTc(String tc) {
 		this.tc = tc;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
+	public String getAdres() {
+		return adres;
+	}
+
+	public void setAdres(String adres) {
+		this.adres = adres;
 	}
 	
 	

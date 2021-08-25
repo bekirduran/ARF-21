@@ -2,11 +2,11 @@ package com.ARF21.pack.shop.entity;
 
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -19,7 +19,6 @@ import java.util.Set;
 @Entity
 @Getter
 @Accessors(fluent = true)
-@NoArgsConstructor
 @ToString
 public class Product extends BaseEntity {
 
@@ -29,7 +28,7 @@ public class Product extends BaseEntity {
     @NotBlank
     private String productDesc;
 
-    @NotBlank
+    @Min(value=0)
     private Double productPrice;
 
 
@@ -40,17 +39,17 @@ public class Product extends BaseEntity {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @JsonBackReference
+    @JsonBackReference(value = "secondParent")
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "supplier_id")
     private Supplier supplier;
 
 
-    @JsonBackReference
+    @JsonManagedReference
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<ProductImage> images = new HashSet<>();
 
-    @JsonManagedReference
+    @JsonManagedReference(value = "thirdParent")
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<AttributeValue> attributeValues = new HashSet<>();
 

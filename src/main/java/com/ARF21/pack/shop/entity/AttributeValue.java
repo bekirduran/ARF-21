@@ -10,7 +10,7 @@ public class AttributeValue extends BaseEntity{
     private String value;
     private Long stock;
     
-    @JsonBackReference
+    @JsonBackReference(value = "thirdParent")
     @ManyToOne(fetch = FetchType.EAGER, optional = false,cascade= CascadeType.ALL)
     @JoinColumn(name = "product_id")
     private Product product;

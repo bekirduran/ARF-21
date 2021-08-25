@@ -17,7 +17,7 @@ import com.ARF21.pack.shop.repository.ProductRepository;
 import com.ARF21.pack.shop.repository.SupplierRepository;
 
 @Service
-public class postmanservice {
+public class PostmanService {
 
 	@Autowired
 	CategoryRepository categoryRepository;
@@ -38,8 +38,7 @@ public class postmanservice {
 	
 	public ResponseEntity<?> postcata(@Valid @RequestBody Category request ){
 		Category cata =new Category(request.getCategoryName(),
-				request.getCategoryDesc(),
-				null);
+				request.getCategoryDesc());
 		categoryRepository.save(cata);
 		return ResponseEntity.ok(new MessageResponse("category save success!"));
 		

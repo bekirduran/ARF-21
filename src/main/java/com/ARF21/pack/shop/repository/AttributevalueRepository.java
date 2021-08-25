@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.ARF21.pack.shop.entity.AttributeValue;
 
-public interface AttributevalueRepository extends JpaRepository<AttributeValue, Long> {
+public interface AttributeValueRepository extends JpaRepository<AttributeValue, Long> {
 
 }
