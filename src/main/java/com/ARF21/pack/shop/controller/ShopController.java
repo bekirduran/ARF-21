@@ -1,9 +1,14 @@
 package com.ARF21.pack.shop.controller;
 
+import com.ARF21.pack.entity.Users;
+import com.ARF21.pack.repository.UserRepository;
 import com.ARF21.pack.shop.controller.request.AttiRequest;
 import com.ARF21.pack.shop.controller.request.Imagerequest;
+import com.ARF21.pack.shop.controller.request.OrderDto;
 import com.ARF21.pack.shop.entity.AttributeValue;
 import com.ARF21.pack.shop.entity.Category;
+import com.ARF21.pack.shop.entity.OrderItems;
+import com.ARF21.pack.shop.entity.Orders;
 import com.ARF21.pack.shop.entity.Product;
 import com.ARF21.pack.shop.entity.ProductAttribute;
 import com.ARF21.pack.shop.entity.ProductDto;
@@ -11,6 +16,7 @@ import com.ARF21.pack.shop.entity.ProductImage;
 import com.ARF21.pack.shop.entity.Supplier;
 import com.ARF21.pack.shop.repository.AttributeValueRepository;
 import com.ARF21.pack.shop.repository.CategoryRepository;
+import com.ARF21.pack.shop.repository.OrdersRepository;
 import com.ARF21.pack.shop.repository.ProductAttributeRepository;
 import com.ARF21.pack.shop.repository.ProductImagerepository;
 import com.ARF21.pack.shop.repository.ProductRepository;
@@ -23,8 +29,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalTime;
 import java.util.List;
 
 import javax.persistence.EntityNotFoundException;
@@ -34,6 +43,12 @@ import javax.validation.Valid;
 @RequestMapping("/api/shop")
 public class ShopController {
 
+	 @Autowired
+	 UserRepository userRepository ;
+
+	@Autowired
+	OrdersRepository ordersRepository ;
+	
     @Autowired
     ProductRepository productRepository ;
     
@@ -44,7 +59,7 @@ public class ShopController {
     CategoryRepository categoryRepository;
     
     @Autowired
-    PostmanService Postmanservice;
+    PostmanService postmanservice;
     
     @Autowired
     ProductImagerepository productImagerepository;
@@ -81,12 +96,12 @@ public class ShopController {
     
     @PostMapping("/savecategory")
     public void postcategory(@Valid @RequestBody Category request) {
-    	Postmanservice.postcata(request);
+    	postmanservice.postcata(request);
     }
     
     @PostMapping("/savesupplier")
     public void postsupplier(@Valid @RequestBody Supplier request) {
-    	Postmanservice.postsup(request);
+    	postmanservice.postsup(request);
     }
     
     @PostMapping("/saveimage")
@@ -126,6 +141,37 @@ public class ShopController {
     @PostMapping("/saveproduct")
     public void postproduct(@RequestBody ProductDto request) {
     	productService.create(request);
+    }
+    
+    
+    @GetMapping("/searchcategory")
+    public @ResponseBody List<Category> getCate(@RequestParam String name) {
+       return categoryRepository.findByCategoryNameContaining(name);
+    }
+    
+    @GetMapping("/searchproduct")
+    public @ResponseBody List<Product> getProduct(@RequestParam String name) {
+       return productRepository.findByProductNameContaining(name);
+    }
+    
+  //@Transactional
+    @PostMapping("/saveorder")
+    public void postorder( @RequestBody OrderDto request) {
+       request.getOrderItems().forEach(orderItemDto -> System.out.println(orderItemDto.toString()));
+       Users user = userRepository.findById(request.getUserid()).orElseThrow(() -> new EntityNotFoundException("user not found"));
+       Orders order = new Orders(user, request.getOrderDate().atTime(LocalTime.now()), request.getOrderTotal());
+        for (int i = 0; i < request.getOrderItems().size(); i++) {
+            Product product = productRepository.findById(request.getOrderItems().get(i).getProductId()).orElseThrow(() -> new EntityNotFoundException("product not found"));
+            order.getOrderItems().add(new OrderItems(order,product,request.getOrderItems().get(i).getQuantity(),product.getProductPrice()*request.getOrderItems().get(i).getQuantity()));
+            ordersRepository.save(order);
+        }
+
+
+    }
+
+    @GetMapping("/getorders/{id}")
+    public List<Orders> getOrdersOfUser( @PathVariable Long id) {
+        return ordersRepository.findByUserIdOrderByIdDesc(id);
     }
 
 }

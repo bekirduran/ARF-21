@@ -1,5 +1,6 @@
 package com.ARF21.pack.shop.service;
 
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,7 @@ public class PostmanService {
 	
 	public ResponseEntity<?> postcata(@Valid @RequestBody Category request ){
 		Category cata =new Category(request.getCategoryName(),
-				request.getCategoryDesc());
+				request.getCategoryDesc(),request.getImage());
 		categoryRepository.save(cata);
 		return ResponseEntity.ok(new MessageResponse("category save success!"));
 		
@@ -50,4 +51,7 @@ public class PostmanService {
 		return ResponseEntity.ok(new MessageResponse("category save success!"));
 		
 	}
+	
+	
+	
 }
