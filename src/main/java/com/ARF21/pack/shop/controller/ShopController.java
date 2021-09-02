@@ -1,81 +1,49 @@
 package com.ARF21.pack.shop.controller;
 
-import com.ARF21.pack.entity.Users;
-import com.ARF21.pack.repository.UserRepository;
+
 import com.ARF21.pack.shop.controller.request.AttiRequest;
 import com.ARF21.pack.shop.controller.request.Imagerequest;
 import com.ARF21.pack.shop.controller.request.OrderDto;
-import com.ARF21.pack.shop.entity.AttributeValue;
 import com.ARF21.pack.shop.entity.Category;
-import com.ARF21.pack.shop.entity.OrderItems;
-import com.ARF21.pack.shop.entity.Orders;
-import com.ARF21.pack.shop.entity.Product;
+import com.ARF21.pack.shop.entity.Company;
 import com.ARF21.pack.shop.entity.ProductAttribute;
 import com.ARF21.pack.shop.entity.ProductDto;
-import com.ARF21.pack.shop.entity.ProductImage;
 import com.ARF21.pack.shop.entity.Supplier;
-import com.ARF21.pack.shop.repository.AttributeValueRepository;
-import com.ARF21.pack.shop.repository.CategoryRepository;
-import com.ARF21.pack.shop.repository.OrdersRepository;
-import com.ARF21.pack.shop.repository.ProductAttributeRepository;
-import com.ARF21.pack.shop.repository.ProductImagerepository;
-import com.ARF21.pack.shop.repository.ProductRepository;
 import com.ARF21.pack.shop.service.ProductService;
 import com.ARF21.pack.shop.service.PostmanService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalTime;
 import java.util.List;
 
-import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/shop")
 public class ShopController {
 
-	 @Autowired
-	 UserRepository userRepository ;
-
-	@Autowired
-	OrdersRepository ordersRepository ;
-	
-    @Autowired
-    ProductRepository productRepository ;
     
     @Autowired
     ProductService productService;
     
-    @Autowired
-    CategoryRepository categoryRepository;
     
     @Autowired
     PostmanService postmanservice;
     
-    @Autowired
-    ProductImagerepository productImagerepository;
-
-    @Autowired
-    ProductAttributeRepository productAttributeRepository;
-    
-    @Autowired
-    AttributeValueRepository attributeValueRepository;
     
     @GetMapping("/all")
     public List<ProductDto> allAccess() {
 
-        return productRepository.findAll().stream()
-                .map(ProductDto::new)
-                .toList();
+        return postmanservice.allAccess();
     }
     
     @GetMapping("/item/{id}")
@@ -91,87 +59,93 @@ public class ShopController {
     @GetMapping("/allcategories")
     public List<Category> getAllCategories() {
 
-        return categoryRepository.findAll();
+        return postmanservice.getAllCategories();
     }
     
     @PostMapping("/savecategory")
-    public void postcategory(@Valid @RequestBody Category request) {
+    public ResponseEntity<String> postcategory(@Valid @RequestBody Category request) {
     	postmanservice.postcata(request);
+    	return ResponseEntity.status(HttpStatus.CREATED).body("HTTP Status will be CREATED (CODE 201)\n");
     }
     
     @PostMapping("/savesupplier")
-    public void postsupplier(@Valid @RequestBody Supplier request) {
+    public ResponseEntity<String> postsupplier(@Valid @RequestBody Supplier request) {
     	postmanservice.postsup(request);
+    	return ResponseEntity.status(HttpStatus.CREATED).body("HTTP Status will be CREATED (CODE 201)\n");
     }
     
     @PostMapping("/saveimage")
-    public void postimage(@Valid @RequestBody Imagerequest request) {
-    	Product pd = productRepository.findById(request.getId())
-                .orElseThrow(() -> new EntityNotFoundException("not found"));
-    	ProductImage pimage=new ProductImage(request.getImageURL(),pd);
-    	productImagerepository.save(pimage);
+    public ResponseEntity<String> postimage(@Valid @RequestBody Imagerequest request) {
+    	postmanservice.postimage(request);
+    	return ResponseEntity.status(HttpStatus.CREATED).body("HTTP Status will be CREATED (CODE 201)\n");
     	
     	
     }
     
     @PostMapping("/saveattribute")
-    public void postatti(@Valid @RequestBody ProductAttribute request) {
-    	ProductAttribute pat=new ProductAttribute(request.getAttributeName());
-    	productAttributeRepository.save(pat);
-    	
+    public ResponseEntity<String> postatti(@Valid @RequestBody ProductAttribute request) {
+    	postmanservice.postatti(request);
+    	return ResponseEntity.status(HttpStatus.CREATED).body("HTTP Status will be CREATED (CODE 201)\n");
     	
     }
     
     @PostMapping("/saveproductattribute")
-    public void postproductAttribute(@RequestBody AttiRequest request) {
-    	System.out.println(request.getValue()+"**"+request.getProductId()+"**"+request.getAttributeId());
-
-        Product pd = productRepository.findById(request.getProductId())
-                .orElseThrow(() -> new EntityNotFoundException("product not found"));
-
-    	ProductAttribute pa = productAttributeRepository.findById(request.getAttributeId())
-                .orElseThrow(() -> new EntityNotFoundException("product attribute not found"));
-
-    	AttributeValue av =new AttributeValue(request.getValue(), pd, pa);
-    	attributeValueRepository.save(av);
-    	
-    	
+    public ResponseEntity<String> postproductAttribute(@RequestBody AttiRequest request) {
+    	postmanservice.postproductAttribute(request);
+    	return ResponseEntity.status(HttpStatus.CREATED).body("HTTP Status will be CREATED (CODE 201)\n");
+    
     }
     
     @PostMapping("/saveproduct")
-    public void postproduct(@RequestBody ProductDto request) {
+    public ResponseEntity<String> postproduct(@RequestBody ProductDto request) {
     	productService.create(request);
+    	return ResponseEntity.status(HttpStatus.CREATED).body("HTTP Status will be CREATED (CODE 201)\n");
     }
     
     
     @GetMapping("/searchcategory")
-    public @ResponseBody List<Category> getCate(@RequestParam String name) {
-       return categoryRepository.findByCategoryNameContaining(name);
+    public ResponseEntity<String> getCate(@RequestParam String name) {
+       postmanservice.getCate(name);
+       return ResponseEntity.status(HttpStatus.OK).body("HTTP Status will be Success (CODE 200)\n");
     }
     
     @GetMapping("/searchproduct")
-    public @ResponseBody List<Product> getProduct(@RequestParam String name) {
-       return productRepository.findByProductNameContaining(name);
+    public ResponseEntity<String> getProduct(@RequestParam String name) {
+       postmanservice.getProduct(name);
+       return ResponseEntity.status(HttpStatus.OK).body("HTTP Status will be Success (CODE 200)\n");
     }
     
   //@Transactional
     @PostMapping("/saveorder")
-    public void postorder( @RequestBody OrderDto request) {
-       request.getOrderItems().forEach(orderItemDto -> System.out.println(orderItemDto.toString()));
-       Users user = userRepository.findById(request.getUserid()).orElseThrow(() -> new EntityNotFoundException("user not found"));
-       Orders order = new Orders(user, request.getOrderDate().atTime(LocalTime.now()), request.getOrderTotal());
-        for (int i = 0; i < request.getOrderItems().size(); i++) {
-            Product product = productRepository.findById(request.getOrderItems().get(i).getProductId()).orElseThrow(() -> new EntityNotFoundException("product not found"));
-            order.getOrderItems().add(new OrderItems(order,product,request.getOrderItems().get(i).getQuantity(),product.getProductPrice()*request.getOrderItems().get(i).getQuantity()));
-            ordersRepository.save(order);
-        }
-
+    public ResponseEntity<String> postorder( @RequestBody OrderDto request) {
+       postmanservice.postorder(request);
+       return ResponseEntity.status(HttpStatus.CREATED).body("HTTP Status will be CREATED (CODE 201)\n");
 
     }
 
     @GetMapping("/getorders/{id}")
-    public List<Orders> getOrdersOfUser( @PathVariable Long id) {
-        return ordersRepository.findByUserIdOrderByIdDesc(id);
+    public ResponseEntity<String> getOrdersOfUser( @PathVariable Long id) {
+        postmanservice.getOrdersOfUser(id);
+        return ResponseEntity.status(HttpStatus.OK).body("HTTP Status will be Success (CODE 200)\n");
+    }
+    
+    @GetMapping("/searchcompany/{id}")
+    public ResponseEntity<String> getCompany(@PathVariable Long id) {
+	       postmanservice.getCompany(id);
+	       return ResponseEntity.status(HttpStatus.OK).body("HTTP Status will be Success (CODE 200)\n");
+	    } 
+    
+    @GetMapping("/searchcompany")
+    public ResponseEntity<String> getCompanyall() {
+	       postmanservice.getCompanyall();
+	       return ResponseEntity.status(HttpStatus.OK).body("HTTP Status will be Success (CODE 200)\n");
+	    } 
+    
+    
+    @PostMapping("/savecompany")
+    public ResponseEntity<String> postcompany(@RequestBody Company request) {
+    	postmanservice.comppush(request);
+    	return ResponseEntity.status(HttpStatus.CREATED).body("HTTP Status will be CREATED (CODE 201)\n");
     }
 
 }

@@ -58,6 +58,7 @@ public class AuthController {
 	@PostMapping("/signin")
 	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
+		
 		Authentication authentication = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
@@ -94,16 +95,16 @@ public class AuthController {
 					.badRequest()
 					.body(new MessageResponse("Error: Email is already in use!"));
 		}
+		
+		if(signUpRequest.getPassword().length()<7) {
+			return ResponseEntity
+					.badRequest()
+					.body(new MessageResponse("Error: \n"
+							+ "password must be more than 6 characters.!"));
+		}
 
 		// Create new user's account
-		Users user = new Users(signUpRequest.getUsername(),
-				signUpRequest.getEmail(),
-				signUpRequest.getName(),
-				signUpRequest.getLastname(),
-				signUpRequest.getTc(),
-				signUpRequest.getAdres(),
-				signUpRequest.getImage(),
-				encoder.encode(signUpRequest.getPassword()));
+		Users user = new Users(signUpRequest.getUsername(), signUpRequest.getEmail(), encoder.encode(signUpRequest.getPassword()));
 
 		Set<String> strRoles = signUpRequest.getRole();
 		Set<Role> roles = new HashSet<>();

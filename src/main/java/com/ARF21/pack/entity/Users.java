@@ -31,23 +31,23 @@ public class Users {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@NotBlank
+	
 	@Size(max=20)
 	private String username;
 	
-	@NotBlank
+	
 	@Size(max=50)
 	private String email;
 	
-	@NotBlank
+	
 	@Size(max=20)
 	private String name;
 	
-	@NotBlank
+	
 	@Size(max=20)
 	private String lastname;
 	
-	@NotBlank
+	
 	@Size(max=11)
 	private String tc;
 	
@@ -75,6 +75,16 @@ public class Users {
 		
 	}
 	
+	
+	
+	public Users(String username,String email,String password) {
+		this.username = username;
+		this.email = email;
+		this.password = password;
+	}
+
+
+
 	public Users(String username, String email,String name, String lastname, String tc, String password,String image,String adres) {
 		this.username = username;
 		this.email = email;
