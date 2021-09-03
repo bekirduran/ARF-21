@@ -1,6 +1,5 @@
 package com.ARF21.pack.shop.service;
 
-<<<<<<< HEAD
 
 
 import java.time.LocalTime;
@@ -8,8 +7,6 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
-=======
->>>>>>> parent of 59cc49c (0.1.9)
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,7 +82,7 @@ public class PostmanService {
 	
 	public ResponseEntity<?> postcata(@Valid @RequestBody Category request ){
 		Category cata =new Category(request.getCategoryName(),
-				request.getCategoryDesc());
+				request.getCategoryDesc(),request.getImage());
 		categoryRepository.save(cata);
 		return ResponseEntity.ok(new MessageResponse("category save success!"));
 		
@@ -97,7 +94,6 @@ public class PostmanService {
 		return ResponseEntity.ok(new MessageResponse("supplier save success!"));
 		
 	}
-<<<<<<< HEAD
 	
 	public ResponseEntity<?> comppush(@Valid @RequestBody Company request){
 		Company company=new Company(request.getCompanyName(), request.getCompanyUrl(), request.getCompanyDepartment(),
@@ -120,11 +116,12 @@ public class PostmanService {
         return categoryRepository.findAll();
     }
 	
-	 public void postimage(@Valid @RequestBody Imagerequest request) {
+	 public ProductImage postimage(@Valid @RequestBody Imagerequest request) {
 	    	Product pd = productRepository.findById(request.getId())
 	                .orElseThrow(() -> new EntityNotFoundException("not found"));
 	    	ProductImage pimage=new ProductImage(request.getImageURL(),pd);
 	    	productImagerepository.save(pimage);
+	    	return pimage;
 	    	
 	 }
 	 
@@ -184,6 +181,4 @@ public class PostmanService {
 	
 	
 	
-=======
->>>>>>> parent of 59cc49c (0.1.9)
 }

@@ -1,30 +1,17 @@
 package com.ARF21.pack.shop.controller;
 
-<<<<<<< HEAD
 
 import com.ARF21.pack.shop.controller.request.AttiRequest;
 import com.ARF21.pack.shop.controller.request.Imagerequest;
 import com.ARF21.pack.shop.controller.request.OrderDto;
 import com.ARF21.pack.shop.entity.Category;
 import com.ARF21.pack.shop.entity.Company;
-=======
-import com.ARF21.pack.shop.controller.request.AttiRequest;
-import com.ARF21.pack.shop.controller.request.Imagerequest;
-import com.ARF21.pack.shop.entity.AttributeValue;
-import com.ARF21.pack.shop.entity.Category;
+import com.ARF21.pack.shop.entity.Orders;
 import com.ARF21.pack.shop.entity.Product;
->>>>>>> parent of 59cc49c (0.1.9)
 import com.ARF21.pack.shop.entity.ProductAttribute;
 import com.ARF21.pack.shop.entity.ProductDto;
+import com.ARF21.pack.shop.entity.ProductImage;
 import com.ARF21.pack.shop.entity.Supplier;
-<<<<<<< HEAD
-=======
-import com.ARF21.pack.shop.repository.AttributeValueRepository;
-import com.ARF21.pack.shop.repository.CategoryRepository;
-import com.ARF21.pack.shop.repository.ProductAttributeRepository;
-import com.ARF21.pack.shop.repository.ProductImagerepository;
-import com.ARF21.pack.shop.repository.ProductRepository;
->>>>>>> parent of 59cc49c (0.1.9)
 import com.ARF21.pack.shop.service.ProductService;
 import com.ARF21.pack.shop.service.PostmanService;
 
@@ -36,13 +23,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-<<<<<<< HEAD
 import org.springframework.web.bind.annotation.RequestParam;
-=======
->>>>>>> parent of 59cc49c (0.1.9)
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -50,18 +35,13 @@ import javax.validation.Valid;
 @RequestMapping("/api/shop")
 public class ShopController {
 
-<<<<<<< HEAD
-=======
-    @Autowired
-    ProductRepository productRepository ;
->>>>>>> parent of 59cc49c (0.1.9)
     
     @Autowired
     ProductService productService;
     
     
     @Autowired
-    PostmanService Postmanservice;
+    PostmanService postmanservice;
     
     
     @GetMapping("/all")
@@ -87,102 +67,89 @@ public class ShopController {
     }
     
     @PostMapping("/savecategory")
-<<<<<<< HEAD
-    public ResponseEntity<String> postcategory(@Valid @RequestBody Category request) {
-    	postmanservice.postcata(request);
-    	return ResponseEntity.status(HttpStatus.CREATED).body("HTTP Status will be CREATED (CODE 201)\n");
+    public ResponseEntity<?> postcategory(@Valid @RequestBody Category request) {
+    	
+    	return postmanservice.postcata(request);
     }
     
     @PostMapping("/savesupplier")
-    public ResponseEntity<String> postsupplier(@Valid @RequestBody Supplier request) {
-    	postmanservice.postsup(request);
-    	return ResponseEntity.status(HttpStatus.CREATED).body("HTTP Status will be CREATED (CODE 201)\n");
-=======
-    public void postcategory(@Valid @RequestBody Category request) {
-    	Postmanservice.postcata(request);
-    }
-    
-    @PostMapping("/savesupplier")
-    public void postsupplier(@Valid @RequestBody Supplier request) {
-    	Postmanservice.postsup(request);
->>>>>>> parent of 59cc49c (0.1.9)
+    public ResponseEntity<?> postsupplier(@Valid @RequestBody Supplier request) {
+    	
+    	return postmanservice.postsup(request);
     }
     
     @PostMapping("/saveimage")
-    public ResponseEntity<String> postimage(@Valid @RequestBody Imagerequest request) {
-    	postmanservice.postimage(request);
-    	return ResponseEntity.status(HttpStatus.CREATED).body("HTTP Status will be CREATED (CODE 201)\n");
+    public ProductImage postimage(@Valid @RequestBody Imagerequest request) {
+    	
+    	return postmanservice.postimage(request);
     	
     	
     }
     
     @PostMapping("/saveattribute")
-    public ResponseEntity<String> postatti(@Valid @RequestBody ProductAttribute request) {
+    public ResponseEntity<?> postatti(@Valid @RequestBody ProductAttribute request) {
     	postmanservice.postatti(request);
     	return ResponseEntity.status(HttpStatus.CREATED).body("HTTP Status will be CREATED (CODE 201)\n");
     	
     }
     
     @PostMapping("/saveproductattribute")
-    public ResponseEntity<String> postproductAttribute(@RequestBody AttiRequest request) {
+    public ResponseEntity<?> postproductAttribute(@RequestBody AttiRequest request) {
     	postmanservice.postproductAttribute(request);
     	return ResponseEntity.status(HttpStatus.CREATED).body("HTTP Status will be CREATED (CODE 201)\n");
     
     }
     
     @PostMapping("/saveproduct")
-    public ResponseEntity<String> postproduct(@RequestBody ProductDto request) {
+    public ResponseEntity<?> postproduct(@RequestBody ProductDto request) {
     	productService.create(request);
     	return ResponseEntity.status(HttpStatus.CREATED).body("HTTP Status will be CREATED (CODE 201)\n");
     }
-<<<<<<< HEAD
     
     
     @GetMapping("/searchcategory")
-    public ResponseEntity<String> getCate(@RequestParam String name) {
-       postmanservice.getCate(name);
-       return ResponseEntity.status(HttpStatus.OK).body("HTTP Status will be Success (CODE 200)\n");
+    public List<Category> getCate(@RequestParam String name) {
+       
+       return postmanservice.getCate(name);
     }
     
     @GetMapping("/searchproduct")
-    public ResponseEntity<String> getProduct(@RequestParam String name) {
-       postmanservice.getProduct(name);
-       return ResponseEntity.status(HttpStatus.OK).body("HTTP Status will be Success (CODE 200)\n");
+    public List<Product> getProduct(@RequestParam String name) {
+       
+       return postmanservice.getProduct(name);
     }
     
   //@Transactional
     @PostMapping("/saveorder")
-    public ResponseEntity<String> postorder( @RequestBody OrderDto request) {
+    public ResponseEntity<?> postorder( @RequestBody OrderDto request) {
        postmanservice.postorder(request);
        return ResponseEntity.status(HttpStatus.CREATED).body("HTTP Status will be CREATED (CODE 201)\n");
 
     }
 
     @GetMapping("/getorders/{id}")
-    public ResponseEntity<String> getOrdersOfUser( @PathVariable Long id) {
-        postmanservice.getOrdersOfUser(id);
-        return ResponseEntity.status(HttpStatus.OK).body("HTTP Status will be Success (CODE 200)\n");
+    public List<Orders> getOrdersOfUser( @PathVariable Long id) {
+        
+        return postmanservice.getOrdersOfUser(id);
     }
     
     @GetMapping("/searchcompany/{id}")
-    public ResponseEntity<String> getCompany(@PathVariable Long id) {
-	       postmanservice.getCompany(id);
-	       return ResponseEntity.status(HttpStatus.OK).body("HTTP Status will be Success (CODE 200)\n");
+    public Optional<Company> getCompany(@PathVariable Long id) {
+	       
+	       return postmanservice.getCompany(id);
 	    } 
     
     @GetMapping("/searchcompany")
-    public ResponseEntity<String> getCompanyall() {
-	       postmanservice.getCompanyall();
-	       return ResponseEntity.status(HttpStatus.OK).body("HTTP Status will be Success (CODE 200)\n");
+    public List<Company> getCompanyall() {
+	       
+	       return postmanservice.getCompanyall();
 	    } 
     
     
     @PostMapping("/savecompany")
-    public ResponseEntity<String> postcompany(@RequestBody Company request) {
+    public ResponseEntity<?> postcompany(@RequestBody Company request) {
     	postmanservice.comppush(request);
     	return ResponseEntity.status(HttpStatus.CREATED).body("HTTP Status will be CREATED (CODE 201)\n");
     }
-=======
->>>>>>> parent of 59cc49c (0.1.9)
 
 }

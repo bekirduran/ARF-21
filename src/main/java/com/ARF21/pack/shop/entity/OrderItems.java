@@ -6,14 +6,17 @@ import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 public class OrderItems extends BaseEntity {
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade= CascadeType.ALL)
+	@JsonBackReference
+    @ManyToOne(fetch = FetchType.EAGER, cascade= CascadeType.ALL)
     @JoinColumn(name = "orders_id")
     private Orders order;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade= CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, cascade= CascadeType.ALL)
     @JoinColumn(name = "product_id")
     private Product product;
 
