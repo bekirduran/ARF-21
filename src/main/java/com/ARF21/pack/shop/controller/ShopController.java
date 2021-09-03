@@ -4,6 +4,7 @@ package com.ARF21.pack.shop.controller;
 import com.ARF21.pack.shop.controller.request.AttiRequest;
 import com.ARF21.pack.shop.controller.request.Imagerequest;
 import com.ARF21.pack.shop.controller.request.OrderDto;
+import com.ARF21.pack.shop.controller.request.OrderResponse;
 import com.ARF21.pack.shop.entity.Category;
 import com.ARF21.pack.shop.entity.Company;
 import com.ARF21.pack.shop.entity.Orders;
@@ -128,7 +129,7 @@ public class ShopController {
     }
 
     @GetMapping("/getorders/{id}")
-    public List<Orders> getOrdersOfUser( @PathVariable Long id) {
+    public List<OrderResponse> getOrdersOfUser(@PathVariable Long id) {
         
         return postmanservice.getOrdersOfUser(id);
     }

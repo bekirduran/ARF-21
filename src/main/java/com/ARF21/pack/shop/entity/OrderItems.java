@@ -26,7 +26,7 @@ public class OrderItems extends BaseEntity {
     @NotNull @Min(value=0)
     private Double price;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false,cascade= CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, cascade= CascadeType.ALL)
     @JoinColumn(name = "attribute_value_id")
     private AttributeValue attributeValue;
 
@@ -50,6 +50,10 @@ public class OrderItems extends BaseEntity {
         this.product = product;
         this.quantity = quantity;
         this.price = price;
+    }
+
+    public AttributeValue getAttributeValue() {
+        return attributeValue;
     }
 
     public Orders getOrder() {
