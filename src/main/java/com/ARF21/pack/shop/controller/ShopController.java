@@ -1,14 +1,30 @@
 package com.ARF21.pack.shop.controller;
 
+<<<<<<< HEAD
 
 import com.ARF21.pack.shop.controller.request.AttiRequest;
 import com.ARF21.pack.shop.controller.request.Imagerequest;
 import com.ARF21.pack.shop.controller.request.OrderDto;
 import com.ARF21.pack.shop.entity.Category;
 import com.ARF21.pack.shop.entity.Company;
+=======
+import com.ARF21.pack.shop.controller.request.AttiRequest;
+import com.ARF21.pack.shop.controller.request.Imagerequest;
+import com.ARF21.pack.shop.entity.AttributeValue;
+import com.ARF21.pack.shop.entity.Category;
+import com.ARF21.pack.shop.entity.Product;
+>>>>>>> parent of 59cc49c (0.1.9)
 import com.ARF21.pack.shop.entity.ProductAttribute;
 import com.ARF21.pack.shop.entity.ProductDto;
 import com.ARF21.pack.shop.entity.Supplier;
+<<<<<<< HEAD
+=======
+import com.ARF21.pack.shop.repository.AttributeValueRepository;
+import com.ARF21.pack.shop.repository.CategoryRepository;
+import com.ARF21.pack.shop.repository.ProductAttributeRepository;
+import com.ARF21.pack.shop.repository.ProductImagerepository;
+import com.ARF21.pack.shop.repository.ProductRepository;
+>>>>>>> parent of 59cc49c (0.1.9)
 import com.ARF21.pack.shop.service.ProductService;
 import com.ARF21.pack.shop.service.PostmanService;
 
@@ -20,7 +36,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+<<<<<<< HEAD
 import org.springframework.web.bind.annotation.RequestParam;
+=======
+>>>>>>> parent of 59cc49c (0.1.9)
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -31,13 +50,18 @@ import javax.validation.Valid;
 @RequestMapping("/api/shop")
 public class ShopController {
 
+<<<<<<< HEAD
+=======
+    @Autowired
+    ProductRepository productRepository ;
+>>>>>>> parent of 59cc49c (0.1.9)
     
     @Autowired
     ProductService productService;
     
     
     @Autowired
-    PostmanService postmanservice;
+    PostmanService Postmanservice;
     
     
     @GetMapping("/all")
@@ -63,6 +87,7 @@ public class ShopController {
     }
     
     @PostMapping("/savecategory")
+<<<<<<< HEAD
     public ResponseEntity<String> postcategory(@Valid @RequestBody Category request) {
     	postmanservice.postcata(request);
     	return ResponseEntity.status(HttpStatus.CREATED).body("HTTP Status will be CREATED (CODE 201)\n");
@@ -72,6 +97,15 @@ public class ShopController {
     public ResponseEntity<String> postsupplier(@Valid @RequestBody Supplier request) {
     	postmanservice.postsup(request);
     	return ResponseEntity.status(HttpStatus.CREATED).body("HTTP Status will be CREATED (CODE 201)\n");
+=======
+    public void postcategory(@Valid @RequestBody Category request) {
+    	Postmanservice.postcata(request);
+    }
+    
+    @PostMapping("/savesupplier")
+    public void postsupplier(@Valid @RequestBody Supplier request) {
+    	Postmanservice.postsup(request);
+>>>>>>> parent of 59cc49c (0.1.9)
     }
     
     @PostMapping("/saveimage")
@@ -101,6 +135,7 @@ public class ShopController {
     	productService.create(request);
     	return ResponseEntity.status(HttpStatus.CREATED).body("HTTP Status will be CREATED (CODE 201)\n");
     }
+<<<<<<< HEAD
     
     
     @GetMapping("/searchcategory")
@@ -147,5 +182,7 @@ public class ShopController {
     	postmanservice.comppush(request);
     	return ResponseEntity.status(HttpStatus.CREATED).body("HTTP Status will be CREATED (CODE 201)\n");
     }
+=======
+>>>>>>> parent of 59cc49c (0.1.9)
 
 }

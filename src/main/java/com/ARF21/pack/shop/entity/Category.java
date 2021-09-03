@@ -22,8 +22,6 @@ public class Category extends BaseEntity{
     @NotBlank
     @Size(max=150)
     private String categoryDesc;
-    
-    private String image;
 
     @JsonManagedReference
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -34,10 +32,9 @@ public class Category extends BaseEntity{
     }
 
 
-    public Category(String categoryName, String categoryDesc,String image) {
+    public Category(String categoryName, String categoryDesc) {
         this.categoryName = categoryName;
         this.categoryDesc = categoryDesc;
-        this.image=image;
     }
 
     public String getCategoryName() {
@@ -63,16 +60,4 @@ public class Category extends BaseEntity{
     public void setCategoryProducts(Set<Product> categoryProducts) {
         this.categoryProducts = categoryProducts;
     }
-
-
-	public String getImage() {
-		return image;
-	}
-
-
-	public void setImage(String image) {
-		this.image = image;
-	}
-    
-    
 }
