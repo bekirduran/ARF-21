@@ -152,29 +152,33 @@ public class PostmanService {
 	       Orders order = new Orders(user, request.getOrderDate().atTime(LocalTime.now()), request.getOrderTotal());
 	        for (int i = 0; i < request.getOrderItems().size(); i++) {
 	            Product product = productRepository.findById(request.getOrderItems().get(i).getProductId()).orElseThrow(() -> new EntityNotFoundException("product not found"));
-	            order.getOrderItems().add(new OrderItems(order,product,request.getOrderItems().get(i).getQuantity(),product.getProductPrice()*request.getOrderItems().get(i).getQuantity()));
-	            ordersRepository.save(order);
+	            if(request.getOrderItems().get(i).getAttribute().isEmpty() || request.getOrderItems().get(i).getAttribute().isBlank())
+	            	order.getOrderItems().add(new OrderItems(order,product,request.getOrderItems().get(i).getQuantity(),product.getProductPrice()*request.getOrderItems().get(i).getQuantity()));
+	            else{
+	            	AttributeValue attributeValue = attributeValueRepository.findByValueAndProductId(request.getOrderItems().get(i).getAttribute(),product.id()).orElseThrow(() -> new EntityNotFoundException("attribute not found"));
+					order.getOrderItems().add(new OrderItems(order,product,request.getOrderItems().get(i).getQuantity(),product.getProductPrice()*request.getOrderItems().get(i).getQuantity(),attributeValue));
+
+				}
+				ordersRepository.save(order);
 	        }
-
-
 	    }
-	 
+
 	 public List<Company> getCompanyall() {
 	       return companyRepository.findAll();
 	    }
-	 
+
 	 public Optional<Company> getCompany(@PathVariable Long id) {
 	       return companyRepository.findById(id);
 	    }
-	 
+
 	 public List<Orders> getOrdersOfUser( @PathVariable Long id) {
 	        return ordersRepository.findByUserIdOrderByIdDesc(id);
 	    }
-	 
+
 	 public @ResponseBody List<Product> getProduct(@RequestParam String name) {
 	       return productRepository.findByProductNameContaining(name);
 	    }
-	 
+
 	 public @ResponseBody List<Category> getCate(@RequestParam String name) {
 	       return categoryRepository.findByCategoryNameContaining(name);
 	    }

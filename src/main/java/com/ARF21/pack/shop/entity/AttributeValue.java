@@ -3,6 +3,10 @@ package com.ARF21.pack.shop.entity;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class AttributeValue extends BaseEntity{
@@ -20,7 +24,10 @@ public class AttributeValue extends BaseEntity{
     @JoinColumn(name = "product_attribute_id")
     private ProductAttribute productAttribute;
 
-
+    /*@JsonManagedReference
+    @OneToMany(mappedBy = "attributeValue", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<OrderItems> orderItems = new HashSet<>();
+*/
     public AttributeValue() {
     }
 
