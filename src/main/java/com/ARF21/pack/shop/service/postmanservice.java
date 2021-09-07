@@ -3,15 +3,18 @@ package com.ARF21.pack.shop.service;
 
 
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 
+import com.ARF21.pack.shop.controller.request.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,9 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.ARF21.pack.entity.Users;
 import com.ARF21.pack.repository.UserRepository;
 import com.ARF21.pack.response.MessageResponse;
-import com.ARF21.pack.shop.controller.request.AttiRequest;
-import com.ARF21.pack.shop.controller.request.Imagerequest;
-import com.ARF21.pack.shop.controller.request.OrderDto;
+import com.ARF21.pack.shop.entity.Application;
 import com.ARF21.pack.shop.entity.AttributeValue;
 import com.ARF21.pack.shop.entity.Category;
 import com.ARF21.pack.shop.entity.Company;
@@ -33,6 +34,7 @@ import com.ARF21.pack.shop.entity.ProductAttribute;
 import com.ARF21.pack.shop.entity.ProductDto;
 import com.ARF21.pack.shop.entity.ProductImage;
 import com.ARF21.pack.shop.entity.Supplier;
+import com.ARF21.pack.shop.repository.ApplicationRepository;
 import com.ARF21.pack.shop.repository.AttributeValueRepository;
 import com.ARF21.pack.shop.repository.CategoryRepository;
 import com.ARF21.pack.shop.repository.CompanyRepository;
@@ -77,6 +79,9 @@ public class PostmanService {
     
     @Autowired
 	 UserRepository userRepository ;
+    
+    @Autowired
+	 ApplicationRepository applicationRepository;
     
     
 	
@@ -145,40 +150,75 @@ public class PostmanService {
 	    	
 	    	
 	    }
-	 
+
+	    @Transactional
 	 public void postorder( @RequestBody OrderDto request) {
 	       request.getOrderItems().forEach(orderItemDto -> System.out.println(orderItemDto.toString()));
 	       Users user = userRepository.findById(request.getUserid()).orElseThrow(() -> new EntityNotFoundException("user not found"));
 	       Orders order = new Orders(user, request.getOrderDate().atTime(LocalTime.now()), request.getOrderTotal());
 	        for (int i = 0; i < request.getOrderItems().size(); i++) {
 	            Product product = productRepository.findById(request.getOrderItems().get(i).getProductId()).orElseThrow(() -> new EntityNotFoundException("product not found"));
-	            order.getOrderItems().add(new OrderItems(order,product,request.getOrderItems().get(i).getQuantity(),product.getProductPrice()*request.getOrderItems().get(i).getQuantity()));
-	            ordersRepository.save(order);
+	            if(request.getOrderItems().get(i).getAttribute().isEmpty() || request.getOrderItems().get(i).getAttribute().isBlank())
+	            	order.getOrderItems().add(new OrderItems(order,product,request.getOrderItems().get(i).getQuantity(),product.getProductPrice()*request.getOrderItems().get(i).getQuantity()));
+	            else{
+	            	AttributeValue attributeValue = attributeValueRepository.findByValueAndProductId(request.getOrderItems().get(i).getAttribute(),product.getId()).orElseThrow(() -> new EntityNotFoundException("attribute not found"));
+					order.getOrderItems().add(new OrderItems(order,product,request.getOrderItems().get(i).getQuantity(),product.getProductPrice()*request.getOrderItems().get(i).getQuantity(),attributeValue));
+				}
+				ordersRepository.save(order);
 	        }
-
-
 	    }
-	 
+
 	 public List<Company> getCompanyall() {
 	       return companyRepository.findAll();
 	    }
-	 
+
 	 public Optional<Company> getCompany(@PathVariable Long id) {
 	       return companyRepository.findById(id);
 	    }
-	 
-	 public List<Orders> getOrdersOfUser( @PathVariable Long id) {
-	        return ordersRepository.findByUserIdOrderByIdDesc(id);
+
+	 public List<OrderResponse> getOrdersOfUser(@PathVariable Long id) {
+		 	List<OrderResponse> responseList = new ArrayList<>();
+	        List<Orders> ordersList = ordersRepository.findByUserIdOrderByIdDesc(id);
+		 for (int i = 0; i <ordersList.size() ; i++) {
+			Orders order = ordersList.get(i);
+			responseList.add(new OrderResponse(order.getId(),order.getOrderDate(),Double.parseDouble(order.getOrderTotal()),
+					order.getOrderItems().stream().map(OrderItemResponse::new).toList()));
+		 }
+
+		 return responseList;
+
 	    }
-	 
+
 	 public @ResponseBody List<Product> getProduct(@RequestParam String name) {
 	       return productRepository.findByProductNameContaining(name);
 	    }
-	 
+
 	 public @ResponseBody List<Category> getCate(@RequestParam String name) {
 	       return categoryRepository.findByCategoryNameContaining(name);
 	    }
 	
+	 public void postapplication(ApplicationDto app) {
+		 
+		 Users user = userRepository.findById(app.getUserId()).orElseThrow(() -> new EntityNotFoundException("user not found"));
+		 Company company = companyRepository.findById(app.getCompanyId()).orElseThrow(() -> new EntityNotFoundException("user not found"));
+		 System.out.println(user.getEmail()+"--------"+company.getCompanyName());
+		 applicationRepository.save(new Application(user,company));
+		
+	}
+	 
+	 public List<String> getapplication(Long id){
+		 List<Application> temp=applicationRepository.findByUsersId(id);
+		 ArrayList<String> comp=new ArrayList<String>();
+		 for(int a=0;a<temp.size();a++) {
+			 Company c=companyRepository.findById(temp.get(a).getCompany().getId())
+					 .orElseThrow(() -> new EntityNotFoundException("product not found"));
+			 String x = c.getCompanyName();
+			 
+			 comp.add(x);
+			
+		 }
+		 return comp;
+	 }
 	
 	
 }

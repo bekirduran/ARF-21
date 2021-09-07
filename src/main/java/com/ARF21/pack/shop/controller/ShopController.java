@@ -1,9 +1,12 @@
 package com.ARF21.pack.shop.controller;
 
 
+import com.ARF21.pack.shop.controller.request.ApplicationDto;
 import com.ARF21.pack.shop.controller.request.AttiRequest;
 import com.ARF21.pack.shop.controller.request.Imagerequest;
 import com.ARF21.pack.shop.controller.request.OrderDto;
+import com.ARF21.pack.shop.controller.request.OrderResponse;
+import com.ARF21.pack.shop.entity.Application;
 import com.ARF21.pack.shop.entity.Category;
 import com.ARF21.pack.shop.entity.Company;
 import com.ARF21.pack.shop.entity.Orders;
@@ -128,7 +131,7 @@ public class ShopController {
     }
 
     @GetMapping("/getorders/{id}")
-    public List<Orders> getOrdersOfUser( @PathVariable Long id) {
+    public List<OrderResponse> getOrdersOfUser(@PathVariable Long id) {
         
         return postmanservice.getOrdersOfUser(id);
     }
@@ -151,5 +154,20 @@ public class ShopController {
     	postmanservice.comppush(request);
     	return ResponseEntity.status(HttpStatus.CREATED).body("HTTP Status will be CREATED (CODE 201)\n");
     }
+    
+    @PostMapping("/postapplication")
+    public ResponseEntity<?> postapplication(@RequestBody ApplicationDto request) {
+       
+        
+       postmanservice.postapplication(request);
+       return ResponseEntity.status(HttpStatus.CREATED).body("HTTP Status will be CREATED (CODE 201)\n");
+    }
+    
+    @GetMapping("/getapplication/{id}")
+    public List<String> getapplication(@PathVariable Long id) {
+	       
+	       return postmanservice.getapplication(id);
+	    } 
+    
 
 }

@@ -7,10 +7,20 @@ public class OrderItemDto {
 
     private Long productId;
     private Long quantity;
+    private String attribute;
+
+    public OrderItemDto() {
+    }
 
     public OrderItemDto(Long productId, Long quantity) {
         this.productId = productId;
         this.quantity = quantity;
+    }
+
+    public OrderItemDto(Long productId, Long quantity, String attribute) {
+        this.productId = productId;
+        this.quantity = quantity;
+        this.attribute = attribute;
     }
 
     public Long getProductId() {
@@ -27,5 +37,9 @@ public class OrderItemDto {
 
     public void setQuantity(Long quantity) {
         this.quantity = quantity;
+    }
+
+    public String getAttribute() {
+        return attribute;
     }
 }
