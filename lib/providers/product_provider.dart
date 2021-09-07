@@ -1,7 +1,6 @@
 import 'package:arf_21/databases/data_helper.dart';
 import 'package:arf_21/models/store_procut.dart';
 import 'package:arf_21/utilities/constants.dart';
-import 'package:http/http.dart';
 
 import 'product.dart';
 import 'package:flutter/material.dart';

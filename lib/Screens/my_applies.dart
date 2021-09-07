@@ -3,7 +3,6 @@ import 'package:arf_21/models/company_model.dart';
 import 'package:arf_21/utilities/alert_messages.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class MyApplies extends StatefulWidget {
   const MyApplies({Key? key}) : super(key: key);

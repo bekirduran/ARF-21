@@ -1,7 +1,6 @@
 import 'package:arf_21/databases/data_helper.dart';
 import 'package:arf_21/utilities/constants.dart';
 import 'package:arf_21/utilities/user_preferences.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../providers/cart.dart';
 import 'package:flutter/material.dart';

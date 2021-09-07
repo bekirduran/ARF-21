@@ -1,5 +1,4 @@
 import 'package:arf_21/Screens/cart_screen.dart';
-import 'package:arf_21/Widgets/app_drawer.dart';
 import 'package:arf_21/Widgets/badge.dart';
 import 'package:arf_21/providers/cart.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';

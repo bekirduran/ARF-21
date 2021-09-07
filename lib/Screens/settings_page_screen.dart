@@ -1,7 +1,6 @@
 
 
 import 'package:arf_21/Screens/login_screen_2.dart';
-import 'package:arf_21/Screens/my_login_screen.dart';
 import 'package:arf_21/Screens/my_profile_edit.dart';
 import 'package:arf_21/Screens/notification_settings_screen.dart';
 import 'package:arf_21/providers/my_login_proiver.dart';
@@ -10,7 +9,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsPage extends StatelessWidget {
   @override

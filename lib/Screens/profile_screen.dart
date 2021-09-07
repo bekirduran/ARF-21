@@ -1,6 +1,5 @@
 import 'package:arf_21/Screens/home_screeen.dart';
 import 'package:arf_21/Screens/my_applies.dart';
-import 'package:arf_21/Screens/posts_screen.dart';
 import 'package:arf_21/Screens/settings_page_screen.dart';
 import 'package:arf_21/models/user.dart';
 import 'package:arf_21/utilities/alert_messages.dart';

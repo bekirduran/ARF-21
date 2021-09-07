@@ -1,13 +1,7 @@
 import 'dart:ui';
-
-import 'package:arf_21/utilities/user_preferences.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import 'my_widget_decorations.dart';
-
 class AlertMessages extends StatefulWidget {
   @override
   AlertMessagesState createState() => AlertMessagesState();

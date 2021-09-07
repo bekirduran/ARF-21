@@ -2,11 +2,9 @@ import 'package:arf_21/Screens/company_screen.dart';
 import 'package:arf_21/Screens/posts_screen.dart';
 import 'package:arf_21/Screens/profile_screen.dart';
 import 'package:arf_21/Screens/shop_welcome_screen.dart';
-import 'package:arf_21/providers/my_login_proiver.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
-import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
