@@ -5,6 +5,7 @@ import 'package:arf_21/Screens/products_overview_screen.dart';
 import 'package:arf_21/providers/product_provider.dart';
 import 'package:arf_21/utilities/alert_messages.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:page_indicator/page_indicator.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
@@ -60,7 +61,7 @@ class _CategoryGridWidgetState extends State<CategoryGridWidget> {
   Widget build(BuildContext context) {
 
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(0),
       child: Column(
         children: [
           bannerWidget(context),
@@ -71,9 +72,8 @@ class _CategoryGridWidgetState extends State<CategoryGridWidget> {
     );
   }
 
-  Expanded categoryGridViewWidget() {
+  Widget categoryGridViewWidget() {
     return Expanded(
-
 
           child: FutureBuilder(
               future: Provider.of<ProductProvider>(context).categoriesOfProduct() ,
@@ -85,44 +85,47 @@ class _CategoryGridWidgetState extends State<CategoryGridWidget> {
                     if (snapshot.hasError)
                       return Text('Error: ${snapshot.error}');
                     else
-                      return GridView.builder(
-                        itemCount: snapshot.data!.length,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            childAspectRatio: 1,
-                            crossAxisSpacing: 10,
-                            mainAxisSpacing: 10),
-                        itemBuilder: (context, index) {
-                          return ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: GestureDetector(
-                              onTap: () {
-                                pushNewScreen(
-                                  context,
-                                  screen: ProductsOverviewScreen(
-                                      snapshot.data![index].categoryName),
-                                  withNavBar: true, // OPTIONAL VALUE. True by default.
-                                  pageTransitionAnimation:
-                                  PageTransitionAnimation.cupertino,
-                                );
-                              },
-                              child: GridTile(
-                                footer: GridTileBar(
-                                  backgroundColor: Colors.black87,
-                                  title: Text(
-                                    "${snapshot.data![index].categoryName}",
-                                    textAlign: TextAlign.center,
+                      return Container(
+                        padding: EdgeInsets.symmetric(horizontal: 8),
+                        child: GridView.builder(
+                          itemCount: snapshot.data!.length,
+                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              childAspectRatio: 1,
+                              crossAxisSpacing: 10,
+                              mainAxisSpacing: 10),
+                          itemBuilder: (context, index) {
+                            return ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: GestureDetector(
+                                onTap: () {
+                                  pushNewScreen(
+                                    context,
+                                    screen: ProductsOverviewScreen(
+                                        snapshot.data![index].categoryName),
+                                    withNavBar: true, // OPTIONAL VALUE. True by default.
+                                    pageTransitionAnimation:
+                                    PageTransitionAnimation.cupertino,
+                                  );
+                                },
+                                child: GridTile(
+                                  footer: GridTileBar(
+                                    backgroundColor: Colors.black87,
+                                    title: Text(
+                                      "${snapshot.data![index].categoryName}",
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                  child:
+                                  Image.network(
+                                    snapshot.data![index].image,
+                                    fit: BoxFit.cover,
                                   ),
                                 ),
-                                child:
-                                Image.network(
-                                  snapshot.data![index].image,
-                                  fit: BoxFit.cover,
-                                ),
                               ),
-                            ),
-                          );
-                        },
+                            );
+                          },
+                        ),
                       );
                 }
 
