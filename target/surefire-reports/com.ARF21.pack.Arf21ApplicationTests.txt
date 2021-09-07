@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.ARF21.pack.Arf21ApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 14.484 s - in com.ARF21.pack.Arf21ApplicationTests
