@@ -253,7 +253,7 @@ class _CompanyDetailState extends State<CompanyDetail> {
                                 children: [
                                   Row(
                                     children: [
-                                      Icon(Icons.phone, size: 18),
+                                      Icon(Icons.info, size: 18),
                                       Container(
                                         padding: EdgeInsets.only(left: 8),
                                         width: width * 0.75,
