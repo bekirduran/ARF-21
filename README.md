@@ -8,7 +8,7 @@ Tech Stack: Java, Spring boot, Hibernate, PostgreSQL for the backend. Flutter an
 
 
 ## Login Screen
-<img src=/screenshots/ss1.jpg >
+<img src=/screenshots/ss1.jpg width="216" height="468">
 
 ## Register Screen
 <img src=/screenshots/ss2.jpg >
